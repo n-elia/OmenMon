@@ -69,9 +69,37 @@ namespace OmenMon.AppGui {
             // Apply the default fan program,
             // or the alternative program if no AC
             if(this.FullPower)
-                this.Program.Run(Config.FanProgramDefault);
+                // If the default program is set to AutoPerformance, then 
+                // enable Performance mode without starting a fan program
+                if (Config.FanProgramDefault == "AutoPerformance")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Performance);
+                // If the default program is set to AutoDefault, then enable
+                // enable Default mode without starting a fan program
+                else if (Config.FanProgramDefault == "AutoDefault")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Default);
+                // If the default program is set to AutoCool, then enable
+                // enable Cool mode without starting a fan program
+                else if (Config.FanProgramDefault == "AutoCool")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Cool);
+                // In all other cases, start the default fan program
+                else
+                    this.Program.Run(Config.FanProgramDefault);
             else
-                this.Program.Run(Config.FanProgramDefaultAlt, true);
+                // If the default alt program is set to AutoPerformance, then 
+                // enable Performance mode without starting a fan program
+                if (Config.FanProgramDefaultAlt == "AutoPerformance")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Performance);
+                // If the default alt program is set to AutoDefault, then enable
+                // enable Default mode without starting a fan program
+                else if (Config.FanProgramDefaultAlt == "AutoDefault")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Default);
+                // If the default program is set to AutoCool, then enable
+                // enable Cool mode without starting a fan program
+                else if (Config.FanProgramDefaultAlt == "AutoCool")
+                    this.Platform.Fans.SetMode(BiosData.FanMode.Cool);
+                // In all other cases, start the default alt fan program
+                else
+                    this.Program.Run(Config.FanProgramDefaultAlt, true);
 
             // Update the main form, if visible
             if(Context.FormMain != null && Context.FormMain.Visible)
